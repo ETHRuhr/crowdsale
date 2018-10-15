@@ -1,6 +1,6 @@
 {
   "name": "greeter",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "truffle-config.js",
   "directories": {
@@ -12,6 +12,6 @@
     "migrate:rinkeby": "truffle migrate --network rinkeby"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Fabian Raetz <fabian.raetz@gmail.com>",
+  "license": "Unlicense"
 }

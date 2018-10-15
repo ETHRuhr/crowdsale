@@ -1,16 +1,24 @@
 {
   "name": "crowdsale",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "truffle-config.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "truffle compile",
+    "test": "truffle test",
+    "migrate:rinkeby": "truffle migrate --network rinkeby"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {}
+  "author": "Fabian Raetz <fabian.raetz@gmail.com>",
+  "license": "Unlicense",
+  "dependencies": {
+    "openzeppelin-solidity": "^2.0.0-rc.3"
+  },
+  "devDependencies": {
+    "moment": "^2.22.2",
+    "web3": "^1.0.0-beta.36"
+  }
 }
