@@ -27,7 +27,12 @@ function CrowdsaleNotStarted({ crowdsaleInfo, crowdsaleAddress }) {
   );
 }
 
-function CrowdsaleFinished({ crowdsaleInfo, crowdsaleAddress }) {
+function CrowdsaleFinished({
+  crowdsaleInfo,
+  crowdsaleAddress,
+  accountAddress,
+  onCheckRegistration
+}) {
   return (
     <div className="Crowdsale">
       <h3>ETH.RUHR ICO is over!</h3>
@@ -36,7 +41,10 @@ function CrowdsaleFinished({ crowdsaleInfo, crowdsaleAddress }) {
         <ClosingCountdown closingTime={crowdsaleInfo.closingTime} />
         <TokenDistributionCounter weiRaised={crowdsaleInfo.weiRaised} />
       </div>
-      <CheckRegistration />
+      <CheckRegistration
+        accountAddress={accountAddress}
+        onCheckRegistration={onCheckRegistration}
+      />
     </div>
   );
 }
@@ -44,7 +52,9 @@ function CrowdsaleFinished({ crowdsaleInfo, crowdsaleAddress }) {
 function CrowdsaleInProgress({
   crowdsaleInfo,
   crowdsaleAddress,
-  onContribute
+  accountAddress,
+  onContribute,
+  onCheckRegistration
 }) {
   return (
     <div className="Crowdsale">
@@ -55,7 +65,10 @@ function CrowdsaleInProgress({
         <TokenDistributionCounter weiRaised={crowdsaleInfo.weiRaised} />
       </div>
       <Register onContribute={onContribute} />
-      <CheckRegistration />
+      <CheckRegistration
+        accountAddress={accountAddress}
+        onCheckRegistration={onCheckRegistration}
+      />
     </div>
   );
 }
@@ -72,7 +85,9 @@ export class Crowdsale extends Component {
   async componentDidMount() {
     this.interval = setInterval(() => this.forceUpdate(), 5000);
 
-    this.crowdsaleDeployer = this.createCrowdsaleDeployerContract(this.props.web3);
+    this.crowdsaleDeployer = this.createCrowdsaleDeployerContract(
+      this.props.web3
+    );
     this.crowdsale = await this.createCrowdsaleContract(this.props.web3);
     this.token = await this.createTokenContract(this.props.web3);
 
@@ -95,7 +110,9 @@ export class Crowdsale extends Component {
   };
 
   createCrowdsaleContract = async web3 => {
-    const crowdsaleAddress = await this.crowdsaleDeployer.methods.crowdsale().call();
+    const crowdsaleAddress = await this.crowdsaleDeployer.methods
+      .crowdsale()
+      .call();
 
     console.log('crowdsaleAddress', crowdsaleAddress);
     return new web3.eth.Contract(CrowdsaleData.abi, crowdsaleAddress, {
@@ -145,6 +162,16 @@ export class Crowdsale extends Component {
     }
   };
 
+  onCheckRegistration = async address => {
+    try {
+      const balanceInWei = await this.token.methods.balanceOf(address).call();
+      return Web3.utils.fromWei(balanceInWei);
+    } catch (ex) {
+      console.error(ex);
+      return '';
+    }
+  };
+
   render() {
     if (!this.state.crowdsaleInfo) {
       return <div>Loading ...</div>;
@@ -161,14 +188,23 @@ export class Crowdsale extends Component {
         />
       );
     } else if (now.isAfter(crowdsaleInfo.closingTime)) {
-      return <CrowdsaleFinished crowdsaleInfo={crowdsaleInfo} />;
+      return (
+        <CrowdsaleFinished
+          crowdsaleInfo={crowdsaleInfo}
+          crowdsaleAddress={this.crowdsale.options.address}
+          accountAddress={this.props.accounts[0]}
+          onCheckRegistration={this.onCheckRegistration}
+        />
+      );
     }
 
     return (
       <CrowdsaleInProgress
         crowdsaleInfo={crowdsaleInfo}
         crowdsaleAddress={this.crowdsale.options.address}
+        accountAddress={this.props.accounts[0]}
         onContribute={this.onContribute}
+        onCheckRegistration={this.onCheckRegistration}
       />
     );
   }
