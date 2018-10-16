@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
-export class ClosingCountdown extends Component{
+export class OpeningCountdown extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -17,7 +17,7 @@ export class ClosingCountdown extends Component{
   }
 
   updateTime = () => {
-    const duration = this.props.closingTime - moment();
+    const duration = this.props.openingTime - moment();
     const s = Math.floor((duration / 1000) % 60);
     const m = Math.floor((duration / 1000 / 60) % 60);
     const h = Math.floor((duration / (1000 * 60 * 60)) % 24);
@@ -28,12 +28,15 @@ export class ClosingCountdown extends Component{
 
   render() {
     return (
-      <div className="ClosingCountdown Box">
+      <div className="OpeningCountdown Box">
         <h4>
-          <strong>END DATE:</strong>
+          <strong>OPENING DATE:</strong>
         </h4>
         <h4>
-          <strong>{this.props.closingTime.format('LLL')}</strong>
+          <strong>{this.props.openingTime.format('LLL')}</strong>
+        </h4>
+        <h4>
+
         </h4>
         <div className="countdown">
           <div><strong>{this.state.d}</strong></div>

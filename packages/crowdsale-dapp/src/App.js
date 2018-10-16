@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
-import logo from './logo.svg';
 import './App.css';
 import { Crowdsale } from './components/crowdsale/Crowdsale';
 import { LoadWeb3 } from './components/LoadWeb3';
