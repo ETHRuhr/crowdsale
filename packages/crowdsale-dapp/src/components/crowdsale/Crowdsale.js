@@ -4,59 +4,11 @@ import moment from 'moment';
 import './Crowdsale.css';
 import CrowdsaleData from 'crowdsale/build/contracts/RuhrCrowdsale.json';
 import CrowdsaleDeployerData from 'crowdsale/build/contracts/RuhrCrowdsaleDeployer.json';
-
-function CrowdsaleContractInfo() {
-  return (
-    <div className="CrowdsaleContractInfo Box">
-      <h4>Token sale contract address</h4>
-      <a href="#" target="_blank" rel="noopener noreferrer">
-        <strong>0xdeadbeaftokensaleaddress</strong>
-      </a>
-    </div>
-  );
-}
-
-function ClosingCountdown({ closingTime }) {
-  return (
-    <div className="ClosingCountdown Box">
-      <h4>
-        <strong>END DATE:</strong>
-      </h4>
-      <h4>
-        <strong>{closingTime.format('LLL')}</strong>
-      </h4>
-    </div>
-  );
-}
-
-function TokenDistributionCounter({ weiRaised }) {
-  console.log(weiRaised);
-  return (
-    <div className="TokenDistributionCounter Box">
-      <h1>{Web3.utils.fromWei(weiRaised)}</h1>
-      <strong>RUHR Tokens distributed</strong>
-    </div>
-  );
-}
-
-function Register() {
-  return (
-    <div className="Register Box">
-      <a href="#">
-        <strong>Become an Early Contributer </strong>
-      </a>
-    </div>
-  );
-}
-
-function CheckRegistration() {
-  return (
-    <div className="CheckRegistration Box">
-      <input type="text" />
-      <button>Check your Registration</button>
-    </div>
-  );
-}
+import { CrowdsaleContractInfo } from './CrowdsaleContractInfo';
+import { ClosingCountdown } from './ClosingCountdown';
+import { TokenDistributionCounter } from './TokenDistributionCounter';
+import { Register } from './Register';
+import { CheckRegistration } from './CeckRegistration';
 
 export class Crowdsale extends Component {
   constructor(props) {
@@ -94,14 +46,16 @@ export class Crowdsale extends Component {
   loadCrowdsaleInfo = async () => {
     const data = await Promise.all([
       this.crowdsale.methods.weiRaised().call(),
+      this.crowdsale.methods.cap().call(),
       this.crowdsale.methods.openingTime().call(),
       this.crowdsale.methods.closingTime().call()
     ]);
 
     const crowdsaleInfo = {
-      weiRaised: data[0],
-      openingTime: moment.unix(data[1]),
-      closingTime: moment.unix(data[2])
+      weiRaised: Web3.utils.fromWei(data[0]),
+      cap: Web3.utils.fromWei(data[1]),
+      openingTime: moment.unix(data[2]),
+      closingTime: moment.unix(data[3])
     };
 
     console.log('crowdsaleInfo', crowdsaleInfo);
@@ -116,7 +70,7 @@ export class Crowdsale extends Component {
     return (
       <div className="Crowdsale">
         <h3>ETH.RUHR ICO is live!</h3>
-        <CrowdsaleContractInfo />
+        <CrowdsaleContractInfo address={this.crowdsale.options.address}/>
         <div className="column column-2">
           <ClosingCountdown
             closingTime={this.state.crowdsaleInfo.closingTime}
