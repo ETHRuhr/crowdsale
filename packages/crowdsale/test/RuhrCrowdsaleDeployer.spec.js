@@ -1,5 +1,5 @@
 const moment = require('moment');
-const web3 = require('web3');
+const Web3 = require('web3');
 
 const RuhrToken = artifacts.require('RuhrToken');
 const RuhrCrowdsale = artifacts.require('RuhrCrowdsale');
@@ -41,8 +41,8 @@ contract('RuhrCrowdsaleDeployer', async accounts => {
     expect(tokenName).to.eq('RuhrToken');
     expect(tokenSymbol).to.eq('RUHR');
     expect(tokenDecimals.toNumber()).to.eq(18);
-    expect(web3.utils.fromWei(tokenTotalSupply)).to.eq(maxCap);
-    expect(web3.utils.fromWei(balanceOfCrowdsale)).to.eq(maxCap);
+    expect(Web3.utils.fromWei(tokenTotalSupply)).to.eq(maxCap);
+    expect(Web3.utils.fromWei(balanceOfCrowdsale)).to.eq(maxCap);
   });
 
   it('should instantiate RuhrCrowdsale correctly', async () => {
@@ -52,10 +52,23 @@ contract('RuhrCrowdsaleDeployer', async accounts => {
     const crowdsaleOpeningTime = await crowdsale.openingTime.call();
     const crowdsaleClosingTime = await crowdsale.closingTime.call();
 
-    expect(crowdsaleRate.toNumber()).to.eq(1);
+    expect(crowdsaleRate.toNumber()).to.eq(1000);
     expect(crowdsaleWallet).to.eq(wallet);
-    expect(web3.utils.fromWei(crowdsaleCap)).to.eq(maxCap);
+    expect(Web3.utils.fromWei(crowdsaleCap)).to.eq(maxCap);
     expect(crowdsaleOpeningTime.toNumber()).to.eq(openingTime.unix());
     expect(crowdsaleClosingTime.toNumber()).to.eq(closingTime.unix());
+  });
+
+  it('should buy RUHR tokens for 1 ETH', async () => {
+    const beneficiary = accounts[2];
+    const ethValue = Web3.utils.toWei('1');
+
+    await crowdsale
+      .buyTokens
+      .sendTransaction(beneficiary, { value: ethValue, from: beneficiary });
+
+    const ruhrBalance = await token.balanceOf.call(beneficiary);
+
+    expect(Web3.utils.fromWei(ruhrBalance)).to.eq('1000');
   });
 });

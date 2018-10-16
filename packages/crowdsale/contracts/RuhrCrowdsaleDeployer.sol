@@ -17,7 +17,7 @@ contract RuhrCrowdsaleDeployer {
         token = new RuhrToken("RuhrToken", "RUHR", 18);
 
         crowdsale = new RuhrCrowdsale(
-            1,           // rate, in RUHRbits - 1 ETH == 1 RUHR
+            1000,        // rate, in RUHRbits - 1 ETH == 1000 RUHR
             wallet,      // wallet to send Ether
             token,       // the token
             40*10**24,   // total cap, in wei - 40 Millionen
