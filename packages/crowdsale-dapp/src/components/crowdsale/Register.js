@@ -1,11 +1,9 @@
 import React from 'react';
 
-export function Register() {
+export function Register({onContribute}) {
   return (
     <div className="Register Box">
-      <a href="#">
-        <strong>Become an Early Contributer </strong>
-      </a>
+      <input type="button" onClick={onContribute} value="Become an Early Contributer" />
     </div>
   );
 }

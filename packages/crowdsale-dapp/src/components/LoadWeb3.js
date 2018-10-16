@@ -35,10 +35,10 @@ export class LoadWeb3 extends Component {
 
     const web3 = new Web3(window.web3.currentProvider);
 
+    let accounts;
     try {
-      await web3.eth.getAccounts();
+      accounts = await web3.eth.getAccounts();
     } catch (ex) {
-      console.log(ex);
       this.setState({
         isLoading: false,
         error: 'MetaMask gesperrt.'
@@ -58,7 +58,8 @@ export class LoadWeb3 extends Component {
     this.setState({
       isLoading: false,
       web3: web3,
-      netId: netId
+      netId: netId,
+      accounts: accounts
     });
   }
 
@@ -71,7 +72,7 @@ export class LoadWeb3 extends Component {
       return (<Error message={this.state.error}/>);
     }
 
-    console.log('Loaded web3');
-    return this.props.render(this.state.web3, this.state.netId);
+    console.log('Loaded web3', this.state.web3, this.state.netId, this.state.accounts);
+    return this.props.render(this.state.web3, this.state.netId, this.state.accounts);
   }
 }
