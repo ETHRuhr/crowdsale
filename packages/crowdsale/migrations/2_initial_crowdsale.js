@@ -1,7 +1,5 @@
 const moment = require('moment');
 
-const RuhrToken = artifacts.require("./RuhrToken.sol");
-const RuhrCrowdsale = artifacts.require("./RuhrCrowdsale.sol");
 const RuhrCrowdsaleDeployer = artifacts.require("./RuhrCrowdsaleDeployer.sol");
 
 module.exports = function(deployer) {

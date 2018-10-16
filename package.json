@@ -7,11 +7,16 @@
     "ganache-cli": "^6.1.8",
     "dotenv": "^4.0.0",
     "truffle-hdwallet-provider": "^1.0.0-web3one.0",
-    "@types/node": "^10.11.7"
+    "@types/node": "^10.11.7",
+    "prettier": "^1.14.3"
   },
   "scripts": {
     "postinstall": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap",
     "ganache": "ganache-cli --networkId 17101710 --mnemonic \"flight cute ski coffee decide milk bitter table speed orchard bag meadow\"",
     "solc:version": "solcjs --version"
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }
