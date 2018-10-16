@@ -8,7 +8,7 @@ module.exports = function(deployer, network) {
     wallet = '0xd7da996cc3c3186b87c5ea23599dec97153bcc21'; // account 4
   }
 
-  const openingTime = moment(); //moment('2018-10-17 19:00');
+  const openingTime = moment('2018-10-17 19:00'); //moment(); //
   const closingTime = openingTime.clone().add(2, 'weeks');
 
   deployer.deploy(
