@@ -15,8 +15,12 @@ export function CrowdsaleTokenInfo({ crowdsaleInfo }) {
           <td>RUHR</td>
         </tr>
         <tr>
-          <td>Amount</td>
+          <td>RUHR Token Amount</td>
           <td>40 Million</td>
+        </tr>
+        <tr>
+          <td>RUHR Token Price</td>
+          <td>0.0001 ETH</td>
         </tr>
         <tr>
           <td>Crowdsale Opening</td>
